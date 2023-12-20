@@ -1,6 +1,6 @@
 # HTB Pro Lab: Dante
 
-Overview:
+## Overview:
 
 The company has not undergone a comprehensive penetration test in the past, and want to reduce their technical debt. They are concerned that any actual breach could lead to a loss of earnings and reputation damage.
 
