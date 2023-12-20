@@ -1,0 +1,152 @@
+200      GET        4l       25w      177c http://10.10.10.6/index
+200      GET        4l       25w      177c http://10.10.10.6/
+301      GET        9l       28w      310c http://10.10.10.6/torrent => http://10.10.10.6/torrent/
+200      GET      652l     3096w        0c http://10.10.10.6/test.php
+200      GET      654l     3106w        0c http://10.10.10.6/test
+200      GET        0l        0w        0c http://10.10.10.6/torrent/config
+200      GET        1l       11w      182c http://10.10.10.6/torrent/logout
+200      GET        0l        0w        0c http://10.10.10.6/torrent/download
+301      GET        9l       28w      316c http://10.10.10.6/torrent/admin => http://10.10.10.6/torrent/admin/
+301      GET        9l       28w      314c http://10.10.10.6/torrent/css => http://10.10.10.6/torrent/css/
+200      GET        2l        0w        4c http://10.10.10.6/torrent/secure
+301      GET        9l       28w      319c http://10.10.10.6/torrent/database => http://10.10.10.6/torrent/database/
+301      GET        9l       28w      313c http://10.10.10.6/torrent/js => http://10.10.10.6/torrent/js/
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/upload (Apache)
+301      GET        9l       28w      317c http://10.10.10.6/torrent/upload => http://10.10.10.6/torrent/upload/
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/templates (Apache)
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/database (Apache)
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/lib (Apache)
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/js (Apache)
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/images (Apache)
+200      GET       20l       79w      765c http://10.10.10.6/torrent/templates/report_form.php
+200      GET        0l        0w        0c http://10.10.10.6/torrent/lib/webtorrent.php
+200      GET      230l     1247w     9813c http://10.10.10.6/torrent/database/th_database.sql
+200      GET       37l       83w     1111c http://10.10.10.6/torrent/templates/torrents_list_date.php
+200      GET        0l        0w        0c http://10.10.10.6/torrent/lib/BDecode.php
+200      GET       11l       58w     2283c http://10.10.10.6/torrent/images/link-upload.png
+200      GET      293l      882w        0c http://10.10.10.6/torrent/index
+200      GET        0l        0w        0c http://10.10.10.6/torrent/lib/BEncode.php
+200      GET       24l       98w     2767c http://10.10.10.6/torrent/images/loading.gif
+200      GET        1l        4w       80c http://10.10.10.6/torrent/admin/users
+200      GET      118l      741w    33029c http://10.10.10.6/torrent/upload/noss.png
+200      GET      903l     2738w    31969c http://10.10.10.6/torrent/js/effects.js
+200      GET        0l        0w        0c http://10.10.10.6/torrent/lib/dblib.php
+200      GET        5l       12w      415c http://10.10.10.6/torrent/images/login2.gif
+200      GET        0l        0w        0c http://10.10.10.6/torrent/edit
+200      GET        6l       14w      321c http://10.10.10.6/torrent/stylesheet.css
+200      GET       16l       92w      936c http://10.10.10.6/torrent/comment
+200      GET       48l      352w     3690c http://10.10.10.6/torrent/templates/faq.php
+200      GET        0l        0w        0c http://10.10.10.6/torrent/lib/stdlib.php
+200      GET      138l      809w    28104c http://10.10.10.6/torrent/preview
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/templates/email (Apache)
+200      GET       55l      314w    12957c http://10.10.10.6/torrent/images/stats.png
+200      GET        2l       15w      153c http://10.10.10.6/torrent/templates/torrent_details.php
+200      GET     1785l     4607w    47603c http://10.10.10.6/torrent/js/prototype.js
+200      GET        2l       15w      143c http://10.10.10.6/torrent/templates/header.php
+200      GET        6l       26w     1164c http://10.10.10.6/torrent/images/th.png
+200      GET        0l        0w        0c http://10.10.10.6/torrent/lib/getscrape.php
+200      GET       45l      266w     2152c http://10.10.10.6/torrent/js/scriptaculous.js
+200      GET       11l       39w      272c http://10.10.10.6/torrent/templates/email/reset_password.php
+200      GET        7l       40w     1385c http://10.10.10.6/torrent/images/back.gif
+200      GET       21l       52w      670c http://10.10.10.6/torrent/templates/subcategories.php
+200      GET        1l        4w       80c http://10.10.10.6/torrent/admin/index
+200      GET      172l     1672w    59294c http://10.10.10.6/torrent/upload/723bc28f9b6f924cca68ccdff96b6190566ca6b4.png
+302      GET        0l        0w        0c http://10.10.10.6/torrent/templates/modify.php => ../../index.php
+200      GET      689l     1962w    20711c http://10.10.10.6/torrent/js/lightbox.js
+200      GET       62l      328w    13772c http://10.10.10.6/torrent/images/feed2.png
+200      GET        4l       17w      161c http://10.10.10.6/torrent/templates/news2.php
+200      GET       13l       65w     2986c http://10.10.10.6/torrent/images/edit.jpg
+200      GET        1l        0w        1c http://10.10.10.6/torrent/templates/form_header.php
+200      GET       12l       47w     1917c http://10.10.10.6/torrent/images/news-arrow.gif
+200      GET        5l       13w       98c http://10.10.10.6/torrent/templates/insufficient_privileges.php
+200      GET        8l       48w     2317c http://10.10.10.6/torrent/images/link-browse.png
+200      GET       26l       63w      964c http://10.10.10.6/torrent/rss.php
+200      GET        3l       15w      153c http://10.10.10.6/torrent/templates/torrents_list.php
+200      GET       12l       78w     2958c http://10.10.10.6/torrent/images/link-news.png
+200      GET      320l      669w     5205c http://10.10.10.6/torrent/templates/layout.css
+200      GET       19l       88w     4242c http://10.10.10.6/torrent/images/link-about.png
+200      GET      185l      476w        0c http://10.10.10.6/torrent/browse
+200      GET        2l       15w      143c http://10.10.10.6/torrent/templates/stats.php
+301      GET        9l       28w      317c http://10.10.10.6/torrent/health => http://10.10.10.6/torrent/health/
+200      GET        2l       14w      480c http://10.10.10.6/torrent/images/page_bg.jpg
+200      GET       24l       91w      964c http://10.10.10.6/torrent/templates/login_form.php
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/health (Apache)
+200      GET       18l      137w     3725c http://10.10.10.6/torrent/images/register%20user.gif
+200      GET        5l       28w      247c http://10.10.10.6/torrent/templates/directory.php
+200      GET        3l        4w      106c http://10.10.10.6/torrent/health/1.gif
+200      GET        7l       36w     1081c http://10.10.10.6/torrent/images/download.png
+302      GET        0l        0w        0c http://10.10.10.6/torrent/templates/footer.php => /index.php
+200      GET        3l        5w      112c http://10.10.10.6/torrent/health/2.gif
+200      GET        7l       39w     2214c http://10.10.10.6/torrent/images/login2.jpg
+200      GET       11l      135w      850c http://10.10.10.6/torrent/templates/about.php
+200      GET        3l        4w      125c http://10.10.10.6/torrent/health/5.gif
+200      GET      123l      315w     2599c http://10.10.10.6/torrent/templates/colours.css
+200      GET        4l        6w      118c http://10.10.10.6/torrent/health/3.gif
+200      GET        6l       20w      120c http://10.10.10.6/torrent/templates/hack.php
+200      GET        4l       15w      144c http://10.10.10.6/torrent/templates/news.php
+200      GET        3l        4w      120c http://10.10.10.6/torrent/health/4.gif
+200      GET       87l      629w    31910c http://10.10.10.6/torrent/images/login.png
+200      GET       87l      652w    35175c http://10.10.10.6/torrent/images/mytorrents.png
+200      GET       88l      634w    33698c http://10.10.10.6/torrent/images/register.png
+200      GET        3l        9w      379c http://10.10.10.6/torrent/images/top-bg.jpg
+200      GET        6l       14w      321c http://10.10.10.6/torrent/stylesheet
+200      GET        1l        5w       51c http://10.10.10.6/torrent/images/reg.gif
+200      GET       10l       51w     2353c http://10.10.10.6/torrent/images/link-home.png
+200      GET        1l        1w       81c http://10.10.10.6/torrent/images/background.gif
+200      GET       11l       68w     3666c http://10.10.10.6/torrent/images/globe.jpg
+200      GET        1l        6w       62c http://10.10.10.6/torrent/images/regb.gif
+200      GET        3l       25w      979c http://10.10.10.6/torrent/images/closelabel.gif
+200      GET       21l      112w     4663c http://10.10.10.6/torrent/images/logo.png
+200      GET      227l      489w        0c http://10.10.10.6/torrent/login
+200      GET       99l      667w    35325c http://10.10.10.6/torrent/images/updatestats.png
+200      GET        5l       25w      917c http://10.10.10.6/torrent/images/feed.png
+301      GET        9l       28w      319c http://10.10.10.6/torrent/torrents => http://10.10.10.6/torrent/torrents/
+200      GET       92l      609w    30884c http://10.10.10.6/torrent/images/button.png
+200      GET        0l        0w        0c http://10.10.10.6/torrent/torrents/index
+200      GET       11l       50w     1789c http://10.10.10.6/torrent/thumbnail
+301      GET        9l       28w      317c http://10.10.10.6/torrent/images => http://10.10.10.6/torrent/images/
+200      GET       26l       63w      964c http://10.10.10.6/torrent/rss
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/css (Apache)
+200      GET      104l      237w     2054c http://10.10.10.6/torrent/css/lightbox.css
+301      GET        9l       28w      314c http://10.10.10.6/torrent/lib => http://10.10.10.6/torrent/lib/
+301      GET        9l       28w      320c http://10.10.10.6/torrent/templates => http://10.10.10.6/torrent/templates/
+301      GET        9l       28w      316c http://10.10.10.6/torrent/users => http://10.10.10.6/torrent/users/
+200      GET        6l       18w      701c http://10.10.10.6/torrent/users/img
+200      GET      134l      306w     3765c http://10.10.10.6/torrent/hide
+200      GET        1l        4w       80c http://10.10.10.6/torrent/users/index
+301      GET        9l       28w      317c http://10.10.10.6/torrent/readme => http://10.10.10.6/torrent/readme/
+MSG      0.000 feroxbuster::heuristics detected directory listing: http://10.10.10.6/torrent/readme (Apache)
+200      GET       63l     2053w    12333c http://10.10.10.6/torrent/readme/license.txt
+200      GET       38l      246w     3412c http://10.10.10.6/torrent/readme/readme.html
+200      GET        7l       38w     1231c http://10.10.10.6/torrent/users/php_captcha.php
+200      GET       87l      622w    32762c http://10.10.10.6/torrent/images/admin.png
+200      GET       66l      389w    19213c http://10.10.10.6/torrent/images/banner.jpg
+200      GET       10l       45w     1972c http://10.10.10.6/torrent/images/seeds.jpg
+200      GET        5l       11w      366c http://10.10.10.6/torrent/images/button-bg.jpg
+200      GET       10l       44w     2153c http://10.10.10.6/torrent/images/link-stats.png
+301      GET        9l       28w      309c http://10.10.10.6/rename => http://10.10.10.6/rename/
+200      GET        1l        1w       43c http://10.10.10.6/torrent/images/blank.gif
+200      GET        6l        9w      363c http://10.10.10.6/torrent/images/orange%20bg.jpg
+200      GET       17l       70w     2511c http://10.10.10.6/torrent/images/link-faq.png
+200      GET        8l       30w     1446c http://10.10.10.6/torrent/images/rightcor.png
+200      GET       10l       25w     1524c http://10.10.10.6/torrent/images/search.jpg
+200      GET        1l        2w       75c http://10.10.10.6/torrent/images/sidebarspace.gif
+200      GET        1l        4w       95c http://10.10.10.6/rename/index
+200      GET       11l       73w     3131c http://10.10.10.6/torrent/images/statics.jpg
+200      GET       22l       65w     2865c http://10.10.10.6/torrent/images/files%20screenshot.jpg
+200      GET        6l       17w      579c http://10.10.10.6/torrent/images/leftcor.png
+200      GET        3l        8w      364c http://10.10.10.6/torrent/images/top-end.jpg
+200      GET        6l       34w     2165c http://10.10.10.6/torrent/images/download%20details.jpg
+200      GET        4l       18w      969c http://10.10.10.6/torrent/images/folder.png
+200      GET        8l       24w     1084c http://10.10.10.6/torrent/images/folder2.png
+200      GET        3l       13w      925c http://10.10.10.6/torrent/images/details.png
+200      GET       81l      600w    33238c http://10.10.10.6/torrent/images/logout.png
+200      GET       11l       47w     2723c http://10.10.10.6/torrent/images/green%20mark.jpg
+200      GET       13l       66w     2484c http://10.10.10.6/torrent/images/control%20panel.gif
+200      GET       10l       59w     2305c http://10.10.10.6/torrent/images/link-development.png
+200      GET        2l        6w      222c http://10.10.10.6/torrent/images/close.gif
+200      GET        0l        0w        0c http://10.10.10.6/torrent/upload_file
+200      GET      215l      474w     7917c http://10.10.10.6/torrent/users/forgot_password
+200      GET        0l        0w        0c http://10.10.10.6/torrent/validator
+200      GET      237l      482w        0c http://10.10.10.6/torrent/users/registration
+200      GET        1l        4w       80c http://10.10.10.6/torrent/users/change_password
