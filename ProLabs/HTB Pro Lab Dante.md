@@ -1444,7 +1444,7 @@ In checking the website, it is a marriage application site. In attempting to qui
 ![[./_resources/HTB_Pro_Lab_Dante.resources/image.39.png]]
 
 In attempting to find more about what I may be able to use to login as the admin, I found the following when selecting on the "Admin" option from the homepage which should allow me to attempt a bruteforce attack on the password reset page with random numbers as the phone number or using password lists on the regular admin login screen.
-![[./HTB_Pro_Lab_Dante.resources/image.40.png]]
+![[./_resources/HTB_Pro_Lab_Dante.resources/image.40.png]]
 
 After checking the forums, it seems I need to conduct a buffer overflow on this machine but this comes after gaining the first flag as some of the comments mention having established a shell already.
 
