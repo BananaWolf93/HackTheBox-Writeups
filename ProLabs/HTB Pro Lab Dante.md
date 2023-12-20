@@ -21,32 +21,32 @@ Your entry point is in 10.10.110.0/24. The firewall at 10.10.110.2 is out of sco
 Step #1:  Enumeration:
 
 In beginning my enumeration of this environment, I've discovered the following ports with Nmap.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.png)
 I notice there is a website titled "you can't get at me bro" and the mention of a txt file titled robots.txt. I also noticed that anonymous login is actually also allowed with FTP. There is also an open SSH port as well. Definitely running UNIX.
 
 Step #2: FTP:
 
 I was able to access the machine via FTP using "ftp" as the user and "password" as the password. From there, I was able to find directories that were hidden and other ones. I found the "Incoming" directory which contained the "todo.txt" file containing good information for leads on where to check or look later on.
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.1.png)!(./_resources/HTB_Pro_Lab_Dante.resources/image.2.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.1.png)![](./_resources/HTB_Pro_Lab_Dante.resources/image.2.png)
 Step #3:  Wordpress Site:
 
 Next, I went ahead and checked out the wordpress site that is hosted by this machine and checked for other directories with Gobuster and the common.txt wordlist.:
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.3.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.3.png)
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.4.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.4.png)
 
 When accessing the robots.txt file in the site, I obtain the following:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.5.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.5.png)
 I decided to run another dictionary attack with Dirbuster this time around since I recall getting way more directories in another penetration test. As expected, the results were actually substantial this time. The file containing all of the files and directories is listed below due to the volume of information.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/DirBusterReport-10.csv)
+![](./_resources/HTB_Pro_Lab_Dante.resources/DirBusterReport-10.csv)
 The txt version is stored on the Kali Linux machine Desktop.
 
 After going through some of the directories, I found two important pages. One is the login page which recongnizes the user "james" as a valid entry. This means I should be able to bruteforce into that account since the password is weak per the previously found "todo.txt" file.
 
 The second page is a list of media files which I will need to inspect. This is listed below:
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.6.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.6.png)
 The parent directories take me here:
 ```
 http://10.10.110.100:65000/wordpress/wp-includes/js/
@@ -63,7 +63,7 @@ http://10.10.110.100:65000/wordpress/index.php/category/uncategorized/
 ```
 
 I found a test cookie on both the admin page and the user.php file when viewing the storage with web dev tools.
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.7.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.7.png)
 Value:
 ```
 WP%20Cookie%20check
@@ -76,28 +76,28 @@ wordpress_test_cookie
 For additional information, check the saved website for tips in Kali. So far, I've created the wordlist using ferox and cewl per the tips. The saved file is in my root directory and is called cewl.txt. Now, I need to figure out how to use Burpsuite with this agains the login page. The instructions provided don't show much of the configuration itself.
 
 I finally found Jame's password for the wordpress site using the custom wordlist I made with cewl!:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.8.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.8.png)
 
 ```
 Password: Toyota
 ```
 
 Here is the dashboard screen after logging in:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.9.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.9.png)
 I found login credentials to an email account.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.10.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.10.png)
 
 Under the "users" section, The actual admin account has the following email linked: [a@b.com](mailto:a@b.com).
 
 I created a new user (admin) on the site since James had the ability to do so. Not a good idea for a regular user if you ask me.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.11.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.11.png)
 
 ```
 Email for the above account: test@b.com
 ```
 
 In checking the comment section, I noticed the comments are numbered in the URL as an ID type of parameter. In conducting a Burpsuite scan using numbers from 1 to 65, I found the following. #16 cannot be access due to insufficient privileges apparently.
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.12.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.12.png)
 The URL found in the response for the comment#16 may be relevant as it redirected me to the #16 comment. Perhaps I can access it indirectly from there?:
 
 Notice: Undefined variable: daemon in /var/www/html/wordpress/wp-content/plugins/akismet/akismet.php on line 250
@@ -279,7 +279,7 @@ print "$string\n";
 <http://192.168.1.101/wordpress/wp-content/themes/twentyfifteen/404.php>
 
 I finally compromised the theme and obtained the following information:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.13.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.13.png)
 I found the user "ironman" which had a ".sudo\_as\_admin\_successful" file which I could not open.  James is in the users listing and has the flag.txt. root is in there as well and another user called secnigma.
 
 $ cat last-crawl.txt
@@ -288,24 +288,24 @@ $ cat last-crawl.txt
 ???
 
 The new internal subnet!:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.14.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.14.png)
 
 I found a password for Balthazar for Mysql:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.15.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.15.png)
 
 Important?:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.16.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.16.png)
 The Home / tmp directory shows enumeration scripts and files that mention specific priv esc vulnerabilities.
 
 LinEnum enumeration:
-!(./_resources/HTB_Pro_Lab_Dante.resources/LinEnum for Dante Prolab #1.txt)
+![](./_resources/HTB_Pro_Lab_Dante.resources/LinEnum for Dante Prolab #1.txt)
 And the second scan revealed:
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/LinEnum for Dante ProLab.txt)
+![](./_resources/HTB_Pro_Lab_Dante.resources/LinEnum for Dante ProLab.txt)
 Just toying around, I decided to try to su as james and using his previously found password...which WORKED!!! I was able to get the second flag!!!
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.17.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.17.png)
 Network enumeration of internal subnet with linpeas:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.18.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.18.png)
 I was able to run a command using find with root privileges as shown below:
 ```
 find test.txt -exec "/bin/bash" -p \;
@@ -370,7 +370,7 @@ balthazar:$6$ADBqqluuRH6W2..l$WKhIu1hD1xnlq9/ZFgLvuWjH11nSGN4FgWVHBTr9e9TtDnmrnc
 ```
 
 I also found the last flag in the root directory:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.19.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.19.png)
 Authorized SSH keys found:
 ```
 cat authorized_keys
@@ -471,7 +471,7 @@ DANTE{LF1_M@K3s_u5_lol}
 ```
 
 Now that I have the user flag, I'm thinking I should be able to get a shell somehow through this LFI vulnerability and escalate privileges to get the root flag.
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.20.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.20.png)
 
 * I may be able to establish a shell with the LFI vulnerability. Check the bookmarked page in Firefox.
 
@@ -551,11 +551,11 @@ password:
 ```
 
 Network share information for SlackMigration:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.21.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.21.png)
 Network share information for IPC$:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.22.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.22.png)
 Network share information for Print$:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.23.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.23.png)
 Domain Enumeration:
 ```
 rpcclient $> enumdomains
@@ -590,10 +590,10 @@ rpcclient $>
 ```
 
 I was finally able to use SMBclient to access the SlackMigration file share by ommitting the "-L" parameter which had caused errors. Then I found a .txt file containing hints similarly to the "todo.txt" file from the beginning of the exercise!:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.24.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.24.png)
 
 When using the LFI wordlist I obtained earlier (found here: <https://github.com/Karmaz95/crimson/blob/master/words/exp/LFI>) , I found that the following directories responded with meaningful information. The needed credentials to gain a foothold has to be in here. I will need to decode the response in Base64 for each one of these requests:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.25.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.25.png)
 
 Request number 392 yielded results in base64 and when decoding it I received the following output.:
 ```
@@ -779,13 +779,13 @@ I found the following information from Frank's directory.:
 ```
 
 There was a zip file as well in this directory with some files that are protected so I transferred them to my local machine via netcat. After extracting the folder, I was able to read all files. Here's what I found so far.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.26.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.26.png)
 
 ```
 STARS5678FORTUNE401 - Password for "Ubuntu images"
 ```
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.27.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.27.png)
 
 Frank's new password on the Ubuntu box:
 ```
@@ -798,7 +798,7 @@ However, the password above for the "ubuntu box" is actually placeholders that w
 ```
 
 Full downloaded conversation can be found here:
-!(./_resources/HTB_Pro_Lab_Dante.resources/2020-05-18.json)
+![](./_resources/HTB_Pro_Lab_Dante.resources/2020-05-18.json)
 
 Root Flag:
 
@@ -811,7 +811,7 @@ import os
 os.system('cp /root/flag.txt /tmp')
 ```
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.28.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.28.png)
 
 Host [172.16.1.5](http://172.16.1.5):
 
@@ -832,12 +832,12 @@ Nmap done: 1 IP address (1 host up) scanned in 240.63 seconds
 zsh: segmentation fault  proxychains nmap -sT -sV 172.16.1.5
 ```
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.38.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.38.png)
 
 After running Nmap vulns scripts, this machine is vulnerable to the following CVE: <https://nvd.nist.gov/vuln/detail/CVE-2012-1182#vulnCurrentDescriptionTitle>
 
 Enumerating the host further for SQL info:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.29.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.29.png)
 
 After using msfconsole by utilizing the resource file I had made for password spraying, I noticed shortly after that one credential actually allowed a successful login to occur on the host on FTP 21. I was able to then use the credentials (listed below) to access FTP and find the first flag on this machine with a hint.:
 
@@ -846,7 +846,7 @@ After using msfconsole by utilizing the resource file I had made for password sp
 ```
 
 I found the first flag after logging into the machine via FTP and listing out the files. I saw flag.txt and used the "get" command to download that file.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.37.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.37.png)
 
 For the root flag, I need to figure out how to use xp\_cmdshell per Pillage from Discord. This should let me get access to the SQL server and acquire the root credentials I need to complete this one.
 
@@ -908,13 +908,13 @@ zsh: segmentation fault  proxychains nmap -sV 172.16.1.12
 ```
 
 After conducting a directory bruteforce, I found a list of team members.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/ferox172.txt)
+![](./_resources/HTB_Pro_Lab_Dante.resources/ferox172.txt)
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.30.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.30.png)
 
 **Host [172.16.1.13](http://172.16.1.13):**
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.35.png)!(./_resources/HTB_Pro_Lab_Dante.resources/image.36.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.35.png)![](./_resources/HTB_Pro_Lab_Dante.resources/image.36.png)
 
 Feroxbuster directory results:
 ```
@@ -986,20 +986,20 @@ I found a cookie ID when curling out the <http://172.16.1.13/discuss/admin> webp
 < Content-Type: text/html; charset=UTF-8
 ```
 I found a file containing JPEGS and what seems to be usernames when analyzing it with Ghidra.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/Thumbs.db)
+![](./_resources/HTB_Pro_Lab_Dante.resources/Thumbs.db)
 
 Host [172.16.1.17](http://172.16.1.17):
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.31.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.31.png)
 
 In checking the above, a vulnerable Webmin server is being run on this linux machine. Per the below screenshot from 'monitor' document I downloaded from the available 'forensics' SMB share, the specific vulnerability is an RCE for change\_password.cgi file/function.  The followig MSF module can exploit this vuilnerability:
 ```
 msf6 exploit(linux/http/webmin_backdoor)
 ```
 site provides additional information: <https://pentest.com.tr/exploits/DEFCON-Webmin-1920-Unauthenticated-Remote-Command-Execution.html> and the following link was provided from the 'monitor' file: <http://www.webmin.com/security.html>
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.41.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.41.png)
 I found that the 'monitor' file was a pcap that opened with Wireshark automatically. I remembered the 'FINtastic' flag in the lab page and went ahead and followed the TCP stream which then allowed me to get credentials!:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.42.png)!(./_resources/HTB_Pro_Lab_Dante.resources/image.43.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.42.png)![](./_resources/HTB_Pro_Lab_Dante.resources/image.43.png)
 
 I was able to login to the s<https://172.16.1.17:10000/session_login.cgi> using:
 ```
@@ -1008,21 +1008,21 @@ passwd: Password6543
 ```
 
 After accessing the site, I used the terminal option and I "ls" immediately which revealed the flag.txt.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.44.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.44.png)
 
 I can confirm that the vulnerability here is the following msfconsole exploit that takes advantage of the credentials for webmin and the activation of the upload and download modules which I've all confirmed. However, my issue is that the exploit timesout for some reason.:
 ```
 linux/http/webmin_packageup_rce
 ```
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.45.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.45.png)
 
 It seems, after checking in Discord, this is in fact the only flag on this machine which I guess makes sense since I got the root flag first.
 
 Host [172.16.1.19](http://172.16.1.19):
 
 This one requires a dependency from another machine I may not have rooted yet.
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.32.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.32.png)
 
 Host [172.16.1.20](http://172.16.1.20):
 
@@ -1357,7 +1357,7 @@ Mode              Size  Type  Last modified              Name
 ```
 
 After digging in katwamba's folder, I found the following flag and an interesting looking xlsx file.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.46.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.46.png)
 
 I now have the **employee\_backup.xlsx** file in my root directory in Kali. I went ahead and changed the extension to .zip. I did this because I noticed I ad the option after right clicking it to extract it even though it was technically a .xlsx format. As a result, I ended up getting various folders and found the following URI which may be important and I think I vaguely recall using that in the "support" HTB so I will need to check. I still need to check those xlsx files further somehow.:
 ```
@@ -1365,7 +1365,7 @@ ext uri="{7626C862-2A13-11E5-B345-FEFF819CDC9F}"
 ```
 
 I also opened natively in Excel using my school account. I found the following usernames and password. **_The other sheets were empty. These may allow me to access other machines like SQL01_**:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.47.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.47.png)
 
 Raw Data:
 ```
@@ -1416,7 +1416,7 @@ proxychains bloodhound-python -d dante.local -v --zip -c All -u katwamba -p pass
 **_bloodhound-python -d \[domain-name\] -v --zip -c All -dc \[domain-controller-ip/name\] -u \[pwned\_user\] -p \[password\] -ns \[ip\_dns\] (--dns-tcp) # use dns-tcp if we sshuttle or chisel_**
 
 Using the above command with the correct syntax, I was able to gather the data I needed for Bloodhound using katwamba's new password:  "password123!" .These files are located in /home/cl3al/Documents/Dante-dc01 (Dante Prolab) directory. After analyzing the data, I found the user "mrb3n" and when analyzing the nide in question, I found the password associated with the user as shown below along with the final flag for the DC.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.48.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.48.png)
 
 mrb3n's password:
 ```
@@ -1424,9 +1424,9 @@ S3kur1ty2020!
 ```
 
 I was finally (after some issues) able to connect to the DC via RDP and found the following in the Firefox browser which revealed the internal subnet.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.50.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.50.png)
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.49.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.49.png)
 
 ```
 proxychains rdesktop 172.16.1.20
@@ -1435,13 +1435,13 @@ I logged in using Dante\katwamba password: "mynewpass123!
 
 Host [172.16.1.101](http://172.16.1.101):
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.33.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.33.png)
 
 Host [172.16.1.102](http://172.16.1.102):
 
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.34.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.34.png)
 In checking the website, it is a marriage application site. In attempting to quickly submit an application after filling it out, I obtained the following results.:
-!(./_resources/HTB_Pro_Lab_Dante.resources/image.39.png)
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.39.png)
 
 In attempting to find more about what I may be able to use to login as the admin, I found the following when selecting on the "Admin" option from the homepage which should allow me to attempt a bruteforce attack on the password reset page with random numbers as the phone number or using password lists on the regular admin login screen.
 ![](./_resources/HTB_Pro_Lab_Dante.resources/image.40.png)
