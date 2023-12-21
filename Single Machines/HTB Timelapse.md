@@ -325,7 +325,7 @@ type
 $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 ```
 
-![[./_resources/HTB_Timelapse.resources/image.png]]
+![](./_resources/HTB_Timelapse.resources/image.png)
 
 Next, with winpeas, I found the following file which is the **PowerShell** history file and it contains the credentials for the svc\_deploy user.:
 ```
@@ -347,14 +347,14 @@ evil-winrm -i 10.10.11.152 -u svc_deploy -p 'E3R$Q62^12p7PLlC%KWaxuaV' -S
 ```
 
 When enumerating this user, I noticed it's part of a group called **_LAPS\_Readers_**. I should be able to use this user account to get the administrator password.:
-![[./_resources/HTB_Timelapse.resources/image.1.png]]
+![](./_resources/HTB_Timelapse.resources/image.1.png)
 
 To read the LAPS password, I just need to use **Get-ADComputer** and specifically request the **ms-mcs-admpwd** property:
 ```
 Get-ADComputer DC01 -property 'ms-mcs-admpwd'  <------------ COMMAND TO USE
 ```
 
-![[./_resources/HTB_Timelapse.resources/image.2.png]]
+![](./_resources/HTB_Timelapse.resources/image.2.png)
 
 ```
 Admin passwd: TvLRRv6T2$6]X.A1.0W65PN+
@@ -362,11 +362,11 @@ Admin passwd: TvLRRv6T2$6]X.A1.0W65PN+
 
 Finally, I just need to create a new session with evil-winrm with the new password for the **Administrator** account.:
 
-![[./_resources/HTB_Timelapse.resources/image.3.png]]
+![](./_resources/HTB_Timelapse.resources/image.3.png)
 
 The root.txt file was not in the Administrator's Desktop, it was actually in the Desktop for the user TRX.:
-![[./_resources/HTB_Timelapse.resources/image.4.png]]
+![](./_resources/HTB_Timelapse.resources/image.4.png)
 I then obtained the user.txt from the legacyy user (I didn't feel like grabbing it from the legacyy session in evil-winrm.:
-![[./_resources/HTB_Timelapse.resources/image.5.png]]
+![](./_resources/HTB_Timelapse.resources/image.5.png)
 
 **###ROOTED!!!###**
