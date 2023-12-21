@@ -2,15 +2,15 @@
 
 Step #1: Nmap scan results:
 
-![[./_resources/HTB_Lame.resources/image.png]]
+![])./_resources/HTB_Lame.resources/image.png)
 Nmap aggressive scan.:
-![[./_resources/HTB_Lame.resources/image.1.png]]
+![])./_resources/HTB_Lame.resources/image.1.png)
 Step #2: FTP Accepts Anon login
 
 There were no directories in the anon FTP account.
 
 Step #3: SMB has publicly available shares.:
-![[./_resources/HTB_Lame.resources/image.2.png]]
+![])./_resources/HTB_Lame.resources/image.2.png)
 After failing to exploit most of the ports, I found that the Samba SMB version has a vulnerability (CVE2007-2447) that allows me to immediately gain a root shell. The module in msfconsole for this is called **_multi/samba/usernmap\_script_**.
 
 Root flag in the user makis directory.:
