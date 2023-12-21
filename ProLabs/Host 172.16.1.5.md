@@ -34,3 +34,37 @@ I found the first flag after logging into the machine via FTP and listing out th
 ![](./_resources/HTB_Pro_Lab_Dante.resources/image.37.png)
 
 For the root flag, I need to figure out how to use xp\_cmdshell per Pillage from Discord. This should let me get access to the SQL server and acquire the root credentials I need to complete this one.
+
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.91.png)
+The issue I am currently facing is that I have not been able to find and validate any credentials after attempting a dictionary attack on mssql using the custom wordlist. Here is my default attempt at abusing xp\_cmdshell with nmap.:
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.92.png)
+To exploit xp\_cmdshell, see the following URL.:
+```
+https://pentestwiki.org/sql-injection/
+```
+
+After getting the credentials from [172.16.2.6](http://172.16.2.6), I verified successful login with msfconsole using the mssql\_login module.:
+
+```
+[+] 172.16.1.5:1433      - 172.16.1.5:1433 - Login Successful: WORKSTATION\sophie:TerrorInflictPurpleDirt996655
+```
+
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.103.png)
+In using the mssql\_exec module in msfconsole, I was able to execute one command at a time and eventually figured out I had to use double '\\\\' when traversing the directories. After some digging, I found the next flag>:
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.104.png)
+
+```
+DANTE{Mult1ple_w4Ys_in!}
+```
+
+I found a printspooler.exe file thanks to winPEAS and I was able to execute it with the following command which gave me nt auth (root) privs!.:
+```
+printspooler.exe -i -c cmd
+```
+
+I finally obtained the final flag!:
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.105.png)
+
+```
+DANTE{Ju1cy_pot4t03s_in_th3_wild}
+```
