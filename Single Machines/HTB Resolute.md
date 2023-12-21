@@ -108,10 +108,10 @@ Nmap done: 1 IP address (1 host up) scanned in 58.36 seconds
 ```
 
 SMB enumeration shows shares are locked down:
-![[./_resources/HTB_Resolute.resources/image.png]]
+![](./_resources/HTB_Resolute.resources/image.png)
 
 When enumerating users with CME, I found the following users. One user has a password noted in the comment section as well.:
-![[./_resources/HTB_Resolute.resources/image.1.png]]
+![](./_resources/HTB_Resolute.resources/image.1.png)
 
 ```
 Uname: marko
@@ -123,7 +123,7 @@ The above password did not work for Marko. It may be due to the fact that the co
 └─$ crackmapexec smb 10.10.10.169 -u userlist.txt -p Welcome123!
 ```
 
-![[./_resources/HTB_Resolute.resources/image.2.png]]
+![](./_resources/HTB_Resolute.resources/image.2.png)
 
 Valid credentials:
 ```
@@ -136,20 +136,20 @@ I was then able to access some SMB shares with Read-only access as show below.:
 smbmap -d megabank.local -H 10.10.10.169 -u 'melanie' -p 'Welcome123!'
 ```
 
-![[./_resources/HTB_Resolute.resources/image.3.png]]
+![](./_resources/HTB_Resolute.resources/image.3.png)
 
 After checking the SMB shares, I did not find anything of value. I proceeded to then establish a remote shell with evil-winrm with melanie's credentials.:
-![[./_resources/HTB_Resolute.resources/image.4.png]]
+![](./_resources/HTB_Resolute.resources/image.4.png)
 
 User.txt hash:
-![[./_resources/HTB_Resolute.resources/image.5.png]]
+![](./_resources/HTB_Resolute.resources/image.5.png)
 Next, I had to recall what the correct command was to see all files in a directory including hidden ones. Apparently, the correct command is:
 ```
 dir -force
 ```
 
 In using this command, I found the PSTranscripts directory which had some sensitive information.:
-![[./_resources/HTB_Resolute.resources/image.6.png]]
+![](./_resources/HTB_Resolute.resources/image.6.png)
 
 New credentials:
 ```
@@ -158,13 +158,13 @@ Passwd: Serv3r4Admin4cc123!
 ```
 
 I was then able to evil-winrm as ryan in a new session.:
-![[./_resources/HTB_Resolute.resources/image.7.png]]
+![](./_resources/HTB_Resolute.resources/image.7.png)
 
 In this case, Ryan is a member of the following groups.:
-![[./_resources/HTB_Resolute.resources/image.8.png]]
+![](./_resources/HTB_Resolute.resources/image.8.png)
 
 When researching domain users group, it appears Ryan is a member of the Contractors group and the DomainAdmins group as well. This can also be seen when using bloodhound:
-![[./_resources/HTB_Resolute.resources/image.9.png]]
+![](./_resources/HTB_Resolute.resources/image.9.png)
 When researching the DomainAdmins group for privilege escalation, I found the following.: <https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/privileged-groups-and-token-privileges>
 
 It is also worth noting that the DNS service runs with NT AUTH\\SYSTEM privileges. This is part of the reason why I can escalate privileges with a loaded custom DLL file. I just need to change the path to this DLL file and restart the service for this to work.
@@ -199,6 +199,6 @@ impacket-psexec megabank.local/Administrator@10.10.10.169
 
 As a result, I got a privileges shell with Administrator permissions and was able to get the root.txt file.:
 
-![[./_resources/HTB_Resolute.resources/image.10.png]]
+![](./_resources/HTB_Resolute.resources/image.10.png)
 
 **###ROOTED!!!###**
