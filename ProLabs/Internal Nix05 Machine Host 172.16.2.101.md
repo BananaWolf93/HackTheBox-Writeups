@@ -1,6 +1,7 @@
 # Host 172.16.2.101:
 
 ![](./_resources/HTB_Pro_Lab_Dante.resources/image.93.png)
+
 I missed this before but in running more nmap scans, this system stands out among all other failed hosts when running this from the .2.5 machine. This is nix05 a Linux machine. Here are some more details.:
 ![](./_resources/HTB_Pro_Lab_Dante.resources/image.94.png)![](./_resources/HTB_Pro_Lab_Dante.resources/image.95.png)
 \*\*\*I need to use katwamba's id\_rsa key to access the .20 DC. Then, change katwamab's password and access the machine via rdp to setup chisel and add the socks port to etc/proxychains4.conf. From there, I can continue investigating .2.101 (this nix05) machine. Comment out 9999 and uncomment 389 socks ports.\*\*\*
