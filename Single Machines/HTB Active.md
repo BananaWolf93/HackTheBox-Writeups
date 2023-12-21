@@ -136,7 +136,7 @@ Passwd HASH: edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuN
 ```
 
 Next, I found out that I can use a tool natively installed on Kali Linux called GPP-decrypt.:
-![[./_resources/HTB_Active.resources/image.png]]
+![](./_resources/HTB_Active.resources/image.png)
 Password:
 ```
 Uname: active.htb\SVC_TGS
@@ -175,9 +175,9 @@ With the SPN hash saved in GetUserSPNs.out file, I then simply used the followin
 john --format=krb5tgs GetUserSPNs.out --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
-![[./_resources/HTB_Active.resources/image.1.png]]
+![](./_resources/HTB_Active.resources/image.1.png)
 Now I should be able to access additional shares with this new password especially since it is the Administrator's password.
-![[./_resources/HTB_Active.resources/image.2.png]]
+![](./_resources/HTB_Active.resources/image.2.png)
 
 Root.txt hash:
 ```
