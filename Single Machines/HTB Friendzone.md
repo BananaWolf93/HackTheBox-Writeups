@@ -91,14 +91,14 @@ Nmap done: 1 IP address (1 host up) scanned in 41.37 seconds
 ```
 
 Feroxbuster small-directories wordlist results:
-![[./_resources/HTB_Friendzone.resources/image.png]]
+![](./_resources/HTB_Friendzone.resources/image.png)
 Feroxbuster small-files wordlist results:
-![[./_resources/HTB_Friendzone.resources/image.2.png]]
+![](./_resources/HTB_Friendzone.resources/image.2.png)
 
 There seems to be a wordpress site that I can scan with WPscan. However, in attempting to scan, I could not get any results. When browsing the directory in Burp, there seems to be nothing there.
 
 In checking SMB shares, I did find the following with a creds.txt. in the "general" share.:
-![[./_resources/HTB_Friendzone.resources/image.1.png]]
+![](./_resources/HTB_Friendzone.resources/image.1.png)
 Raw data for creds.txt:
 ```
 └─$ cat creds.txt     
@@ -110,26 +110,26 @@ These credentials may be a login to a portal somwhere. After finding the email a
 https://friendzoneportal.red/
 ```
 
-![[./_resources/HTB_Friendzone.resources/image.3.png]]
+![](./_resources/HTB_Friendzone.resources/image.3.png)
 Feroxbuster rerun using small-files wordlist:
-![[./_resources/HTB_Friendzone.resources/image.4.png]]
+![](./_resources/HTB_Friendzone.resources/image.4.png)
 I need to scan for directories, check out the wp-register.php directory, and search for a login portal to use the previously found admin credentials. SSH, FTP, SMB do not accept the credentials. However, there is an "admin" user on the machine per the SMB checks I performed with CME which also confirmed the hostname of the machine as well (originally shown in the nmap scan).:
-![[./_resources/HTB_Friendzone.resources/image.5.png]]
+![](./_resources/HTB_Friendzone.resources/image.5.png)
 
 Feroxbuster results obtained with small-directories wordlist.:
-![[./_resources/HTB_Friendzone.resources/image.6.png]]
+![](./_resources/HTB_Friendzone.resources/image.6.png)
 One step I missed was to do a zone transfer using dig on [friendzone.red](http://friendzone.red) which showed up in the nmap scan. I performed the transfer and added the newly found domains to the /etc/hosts file on my attacker machine as shown below.:
-![[./_resources/HTB_Friendzone.resources/image.7.png]]
+![](./_resources/HTB_Friendzone.resources/image.7.png)
 
 After logging into the [administrator1.friendzone.red](http://administrator1.friendzone.red) domain using the previously found login credentials, I obtained the following result.:
-![[./_resources/HTB_Friendzone.resources/image.8.png]]![[./_resources/HTB_Friendzone.resources/image.9.png]]
+![](./_resources/HTB_Friendzone.resources/image.8.png)![](./_resources/HTB_Friendzone.resources/image.9.png)
 
 Oddly, it asks me to manually enter the image\_name parameter and the page is under development.
-![[./_resources/HTB_Friendzone.resources/image.10.png]]
+![](./_resources/HTB_Friendzone.resources/image.10.png)
 After entering the above shown parameter, I got the following.:
-![[./_resources/HTB_Friendzone.resources/image.11.png]]
+![](./_resources/HTB_Friendzone.resources/image.11.png)
 feroxbuster results I obtained, I found another images directory using small-files wordlist.:
-![[./_resources/HTB_Friendzone.resources/image.12.png]]
+![](./_resources/HTB_Friendzone.resources/image.12.png)
 I had to lookup the next step. I learned that the URL https://administrator1.friendzone.red/dashboard.php?image\_id=a.jpg&pagename=timestamp is executing both the image and the file called timestamp.php. Additionally, it is assumed in this case that the previously writable "Development" share I previously accessed via SMB is in the /etc/Development path. Apparently, I should be able to get a reverse shell by uploading a php reverse shell to the SMB directory I previously visited and they trigger it using this URL but adding in the new directory as follows.:  https://administrator1.friendzone.red/dashboard.php?image\_id=a.jpg&pagename=/etc/Development/test
 
 I obtained a reverse shell and found the user.txt flag.:
@@ -151,9 +151,9 @@ db_name=FZ
 ```
 
 After running [Linpeas.sh](http://Linpeas.sh) I found that there was a writeable [os.py](http://os.py) file which also was being pulled by a cronjob with root privileges. I went ahead and added a reverse shell at the bottom of the file and saved it. After waiting for 2 minutes, (which is the frequency of the cronjob executing the [os.py](http://os.py) file) I got a root shell.:
-![[./_resources/HTB_Friendzone.resources/image.13.png]]
+![](./_resources/HTB_Friendzone.resources/image.13.png)
 Root shell:
-![[./_resources/HTB_Friendzone.resources/image.14.png]]
+![](./_resources/HTB_Friendzone.resources/image.14.png)
 Root flag:
 ```
 142e41743d7596a52fd9d24d70df9e7b
