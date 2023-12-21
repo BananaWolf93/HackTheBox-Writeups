@@ -1,12 +1,12 @@
 # HTB Brainfuck
 
 Nmap scans:
-![[./_resources/HTB_Brainfuck.resources/image.png]]
+![](./_resources/HTB_Brainfuck.resources/image.png)
 Aggressive nmap scan:
-![[./_resources/HTB_Brainfuck.resources/image.1.png]]
+![](./_resources/HTB_Brainfuck.resources/image.1.png)
 
 In this case, I noticed several domains shown in the above aggressive output such as _sup3rs3cr3t.brainfuck.htb._ I then added them to the /etc/hosts file and associated them with the [10.10.10.17](http://10.10.10.17) IP so that I could access the domains from my browser.
-![[./_resources/HTB_Brainfuck.resources/image.2.png]]
+![](./_resources/HTB_Brainfuck.resources/image.2.png)
 This one in particular brought me to a "super secret forum".
 
 I have bruteforced the directories without having created an account so far and have not found anything significant yet. The results are saved to the Desktop. There are two users in the flarum discussion site.:
@@ -26,7 +26,7 @@ https://brainfuck.htb/wp-login.php
 ```
 
 I found the following email address:
-![[./_resources/HTB_Brainfuck.resources/image.3.png]]
+![](./_resources/HTB_Brainfuck.resources/image.3.png)
 
 ```
 orestis@brainfuck.htb
@@ -131,18 +131,18 @@ In examining the PoC, I figured out that this is html code that I can locally ho
 searchsploit -m php/webapps/41006.txt
 ```
 I just needed to edit the host and the username and email as shown below before saving it as an html file.:
-![[./_resources/HTB_Brainfuck.resources/image.4.png]]
+![](./_resources/HTB_Brainfuck.resources/image.4.png)
 After viewing my local server in my browser and clicking on the file, I noticed a login showing the username I left by default and a submit button. I click on the submit button and waited. Once it finished loading, it showed a blank page for :
 ```
 https://brainfuck.htb/wp-admin/admin-ajax.php
 ```
 I changed the URL in the address bar to just <https://brainfuck.htb> and I noticed I was logged in as an administrator!.
-![[./_resources/HTB_Brainfuck.resources/image.5.png]]
+![](./_resources/HTB_Brainfuck.resources/image.5.png)
 
 In accessing my profile, I noticed I did not have access to the entire wordpress site despite the username "administrator". So I edited the above html file and changed the username to "admin" which now allowed me to gain the true administrator page of the WP site.
 
 Next I checked out the plugins.:
-![[./_resources/HTB_Brainfuck.resources/image.6.png]]
+![](./_resources/HTB_Brainfuck.resources/image.6.png)
 In viewing the above plugins, there is a vulnerability for Easy WP SMTP that can allow an attacker to find emails and reset the admin password through password emails for password recovery. The CVE linked to this is
 CVE-2020-35234. The debug log file can be found here:
 ```
@@ -150,7 +150,7 @@ wp-content/plugins/easy-wp-smtp/
 ```
 
 After failing to get the plugin to generate a debug file. I found out that I could actually see the password value by analyzing the SMTP credentials set in the plugin as shown here.:
-![[./_resources/HTB_Brainfuck.resources/image.7.png]]
+![](./_resources/HTB_Brainfuck.resources/image.7.png)
 
 ```
 Email: orestis@brainfuck.htb
@@ -159,7 +159,7 @@ Newly found Password: kHGuERB29DNiNE
 
 Now that I have the above credentials, I should be able to access the user's mailbox from a simple mail client. I downloaded and installed Thunderbird on my machine and configured IMAP for incoming and SMTP for outgoing mail. Then I was able to access the inbox to see the mail.
 
-![[./_resources/HTB_Brainfuck.resources/image.8.png]]
+![](./_resources/HTB_Brainfuck.resources/image.8.png)
 Raw Data:
 ```
 username: orestis
@@ -169,15 +169,15 @@ password: kIEnnfEKJ#9UmdO
 With the above credentials, I was now able to access the <https://sup3rs3cr3t.brainfuck.htb> site and login as orestis.
 Next, I found the following thread mentioning an encrypted thread where the SSH key would be provided. The second screenshot shows the thread which I will now need to decrypt to obtain the SSH key.
 
-1. ![[./_resources/HTB_Brainfuck.resources/image.9.png]]
+1. ![](./_resources/HTB_Brainfuck.resources/image.9.png)
 2. 
 
-![[./_resources/HTB_Brainfuck.resources/image.10.png]]
+![](./_resources/HTB_Brainfuck.resources/image.10.png)
 
 Explanation:
 
 If we look at the above encrypted text, it is important to pay close attention to any patterns first. In this case, the first thing we notice is that the signature in the unencrypted message is of the same length of one of the encrypted lines of text. For example, see the following two images.:
-![[./_resources/HTB_Brainfuck.resources/image.11.png]]![[./_resources/HTB_Brainfuck.resources/image.12.png]]
+![](./_resources/HTB_Brainfuck.resources/image.11.png)![](./_resources/HTB_Brainfuck.resources/image.12.png)
 Here, we see the first screenshot from the encrypted thread and the next screenshot is from the unencrypted thread. The signature contain the same grouping of characters and the same total number of characters as well. This indicates that the level of encryption used here is weak and predictable since the only thing that is changing are the letters.
 
 Solution:
@@ -185,9 +185,9 @@ Solution:
 To solve this, we need a common source of truth in order to correlate both differentiating values. In this case, we will want to use ASCII which provides the specific values for each letter. By using this, we can traceback the positions from the characters of the encrypted text to the plaintext version. In this case, we can just go ahead and use <https://rumkin.com/tools/cipher/one-time-pad/> to do this quickly and efficiently.
 
 After using the above link, we obtained the following information.:
-![[./_resources/HTB_Brainfuck.resources/image.13.png]]
+![](./_resources/HTB_Brainfuck.resources/image.13.png)
 Now, we should be able to use this as the passphrase in order to decrypt the remaining ciphertext in the encrypted thread using: <https://rumkin.com/tools/cipher/vigenere/> to accomplish this.
-![[./_resources/HTB_Brainfuck.resources/image.14.png]]
+![](./_resources/HTB_Brainfuck.resources/image.14.png)
 Finally, I can decrypt the messages from the threat by setting the above to "decrypt" and then using:
 ```
 fuckmybrain
@@ -204,7 +204,7 @@ ssh2john id_rsa > id_rsa.hash
 ```
 in order to get a hash from the key which I can then crack with john using rockyou.:
 
-![[./_resources/HTB_Brainfuck.resources/image.16.png]]![[./_resources/HTB_Brainfuck.resources/image.15.png]]
+![](./_resources/HTB_Brainfuck.resources/image.16.png)![](./_resources/HTB_Brainfuck.resources/image.15.png)
 SSH passphrase:
 ```
 3poulakia!
