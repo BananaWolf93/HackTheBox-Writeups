@@ -1,12 +1,12 @@
 # HTB Cronos
 
 Nmap basic scan:
-![[./_resources/HTB_Cronos.resources/image.png]]
+![](./_resources/HTB_Cronos.resources/image.png)
 Nmap aggressive scan:
-![[./_resources/HTB_Cronos.resources/image.1.png]]
+![](./_resources/HTB_Cronos.resources/image.1.png)
 
 Ferox buster results with "small-directories" wordlist:
-![[./_resources/HTB_Cronos.resources/image.2.png]]
+![](./_resources/HTB_Cronos.resources/image.2.png)
 
 Ferox buster results with "small-files" wordlist:
 ```
@@ -334,10 +334,10 @@ Here are the main 3 sections that standout to me.:
 **| Reference: http://codex.wordpress.org/Must\_Use\_Plugins**
 
 In this case, I hit a wall. It turns out I needed to enumerate DNS further. Using nslookup, I found the folowing subdomain.:
-![[./_resources/HTB_Cronos.resources/image.3.png]]
+![](./_resources/HTB_Cronos.resources/image.3.png)
 
 When there is a TCP DNS, ALWAYS enumerate this further. Often times, this just means we can get additional domains to point them to the IP address in the /etc/hosts file.:
-![[./_resources/HTB_Cronos.resources/image.4.png]]
+![](./_resources/HTB_Cronos.resources/image.4.png)
 
 In running ferox buster again with the small-files wordlist, I obtained better results from the new admin.cronos.htb domain.:
 ```
@@ -388,9 +388,9 @@ I was able to use sql injection to get passed the login screen for admin.cronos.
 After logging in, the only thing available to me was a "Net Tool v0.1" Which I quickly realized I could use through burpsuite, (after viewing the responses to my queries from the page shown below) to perform arbitrary command execution.
 
 Net Tool:
-![[./_resources/HTB_Cronos.resources/image.5.png]]
+![](./_resources/HTB_Cronos.resources/image.5.png)
 Burp: Modified request and response:
-![[./_resources/HTB_Cronos.resources/image.6.png]]
+![](./_resources/HTB_Cronos.resources/image.6.png)
 A user named "**Noulis**" exists here.
 I was also able to get the user.txt flag.:
 ```
@@ -535,7 +535,7 @@ https://blog.theori.io/research/CVE-2022-32250-linux-kernel-lpe-2022/
 ```
 
 In checking the cronjobs from the [linpeas.sh](http://linpeas.sh) output, I found a php file that runs every minute as root. I may be able to use this to escalate privileges.:
-![[./_resources/HTB_Cronos.resources/image.7.png]]
+![](./_resources/HTB_Cronos.resources/image.7.png)
 
 I tried to edit the file in question to execute a reverse shell and I also tried to use a different script both which did not work. The I realized that I can actually replace the entire file too since it is the cron job that is run as root and not the file. I used the following php payload below after editing the IP and replaced the artisan file with this file with the same name. After setting up my listener, I was able to get a shell.:
 ```
@@ -578,7 +578,7 @@ I tried to edit the file in question to execute a reverse shell and I also tried
 // Limitations
 ```
 
-![[./_resources/HTB_Cronos.resources/image.8.png]]
+![](./_resources/HTB_Cronos.resources/image.8.png)
 Root flag:
 ```
 eb1c7e9af38656c86511d6924efc954f
