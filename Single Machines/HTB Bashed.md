@@ -1,9 +1,9 @@
 # HTB Bashed
 
 Basic Nmap Scan:
-![[./_resources/HTB_Bashed.resources/image.png]]
+![](./_resources/HTB_Bashed.resources/image.png)
 Aggressive Nmap Scan:
-![[./_resources/HTB_Bashed.resources/image.1.png]]
+![](./_resources/HTB_Bashed.resources/image.1.png)
 
 Feroxbuster findings with raft-small-files:
 ```
@@ -132,7 +132,7 @@ Next, I found via [Linpeas.sh](http://Linpeas.sh), that I can execute commands a
 sudo -u scriptmanager /bin/bash
 ```
 From here, I was able to access the scripts directory in the root directory which had the following files.:
-![[./_resources/HTB_Bashed.resources/image.2.png]]
+![](./_resources/HTB_Bashed.resources/image.2.png)
 When inspecting these files, I can quickly realize that the [test.py](http://test.py) file is able to execute as root. This python file created the test.txt file we see here. I can modify this python script to do anything as root.
 
 I used a reverse shell from pentestmonkey to accomplish this. it is vital to note that there was a cronjob listed to execute the [test.py](http://test.py) script every minute as root. If I were to execute it myself, this obviously would not work. This require a bit of a wait time so that it can be executed automacatically when I have an open netcat listener.
