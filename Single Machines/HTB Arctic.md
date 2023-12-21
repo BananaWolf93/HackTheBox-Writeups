@@ -54,19 +54,19 @@ Nmap done: 1 IP address (1 host up) scanned in 149.30 seconds
 ```
 
 In checking port 8500, I was able to access this in a browser and it shows a couple of directories and has to do with Adobe Cold Fusion which is a web app dev platform for deploying web and mobile applications.:
-![[./_resources/HTB_Arctic.resources/image.png]]
+![](./_resources/HTB_Arctic.resources/image.png)
 
 Clicking on the first directory, I then find multiple child directories and one of them is the Administrator directory which takes me to the following login page where the username "admin" is already prepopulated. I should be able to bruteforce my way into the application assuming common default credentials don't work.
-![[./_resources/HTB_Arctic.resources/image.1.png]]
+![](./_resources/HTB_Arctic.resources/image.1.png)
 
 I was not able to break in with several default credentials. However, after investigating the name of this platform and the version, I found a quick script/exploit that creates a shell via RCE exploit after executing it. Link here: <https://www.exploit-db.com/exploits/50057>
 
-![[./_resources/HTB_Arctic.resources/image.3.png]]![[./_resources/HTB_Arctic.resources/image.2.png]]
+![](./_resources/HTB_Arctic.resources/image.3.png)![](./_resources/HTB_Arctic.resources/image.2.png)
 
 User enumeration:
-![[./_resources/HTB_Arctic.resources/image.4.png]]
+![](./_resources/HTB_Arctic.resources/image.4.png)
 
 user.txt flag found:
-![[./_resources/HTB_Arctic.resources/image.5.png]]
+![](./_resources/HTB_Arctic.resources/image.5.png)
 
 After viewing IPPSEC's video, he used exploit suggester in msfconsole to find a way to escalate privileges. This did not work for me for some reason. I need to figure out where to go from here. I will watch to see what exploit suggester he found and see if I can leverage that some other way. I think the main issue I have with this machine is that it is a limited reverse shell and not a fully interactive one.
