@@ -2,11 +2,11 @@
 
 Nmap basic scan:
 
-![[./_resources/HTB_Popcorn.resources/image.png]]
+![](./_resources/HTB_Popcorn.resources/image.png)
 Nmap aggressive scan:
-![[./_resources/HTB_Popcorn.resources/image.1.png]]
+![](./_resources/HTB_Popcorn.resources/image.1.png)
 Large feroxbuster results with small-directories wordlist.:
-![[./_resources/HTB_Popcorn.resources/popcorn.txt]]
+![](./_resources/HTB_Popcorn.resources/popcorn.txt)
 In checking the URL from above: <http://10.10.10.6/torrent/database/th_database.sql> the bottom part of the file shows a username "Admin" and what to my eye looked like a hash value. When using crackstation, it cracked the MD5 hash providing what looks like a possible password.:
 ```
 -- phpMyAdmin SQL Dump
@@ -199,7 +199,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` VALUES (3, 'Admin', '1844156d4166d94387f1a4ad031ca5fa', 'admin', 'admin@yourdomain.com', '2007-01-06 21:12:46', '2007-01-06 21:12:46');
 ```
 
-![[./_resources/HTB_Popcorn.resources/image.3.png]]![[./_resources/HTB_Popcorn.resources/image.2.png]]
+![](./_resources/HTB_Popcorn.resources/image.3.png)![](./_resources/HTB_Popcorn.resources/image.2.png)
 
 In attempting to access the machine via SSH, it is configured to accept a key for remote access. The credentials found probably work for the login I found earlier.
 ```
@@ -209,22 +209,22 @@ passwd: admin12
 
 The credentials seem to not work at the http://10.10.10.6/torrent/login.php . However, In attempting to check for SQL Injection vulnerabilities, I was able to trigger the following confirming that the MySQL db is vulnerable to injection with: admin' --
 
-![[./_resources/HTB_Popcorn.resources/image.4.png]]
+![](./_resources/HTB_Popcorn.resources/image.4.png)
 After bruteforcing this with Burpsuite using my custom SQL wordlist in Evernote, I was able to get a status OK (200) with the following which allowed me to login as admin!:
-![[./_resources/HTB_Popcorn.resources/image.6.png]]
+![](./_resources/HTB_Popcorn.resources/image.6.png)
 
 ```
 uname: admin' #
 passwd: admin' #
 ```
 
-![[./_resources/HTB_Popcorn.resources/image.5.png]]
+![](./_resources/HTB_Popcorn.resources/image.5.png)
 
 After investigating the site, there is an upload functionality that I tried to exploit using a php reverse shell. However, I kept getting the error: "Invalid file". I also tried uploading the php reverse shell using functionality to upload a an image when editing the already existing torrent in the site. However, I got the same error. Apparently, I can just modify the request in burp that contains the php code by changing the **CONTENT TYPE:** parameter to image/png. In doing so, and resending the request through burp, allowed it to actually go through. Finally, I just need to click on the **_"image file not found!"_** to execute it which allowed me to get a low privilege shell!:
-![[./_resources/HTB_Popcorn.resources/image.7.png]]![[./_resources/HTB_Popcorn.resources/image.8.png]]
+![](./_resources/HTB_Popcorn.resources/image.7.png)![](./_resources/HTB_Popcorn.resources/image.8.png)
 
 In browsing the home directory, I found a new user george and obtained the user.txt flag.:
-![[./_resources/HTB_Popcorn.resources/image.9.png]]
+![](./_resources/HTB_Popcorn.resources/image.9.png)
 user flag:
 ```
 03d92205128a74f290c4696087eb1748
